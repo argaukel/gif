@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Quoth the Giphy</title>
+</head>
+
+<body>
+    <h1>Gif-a-palooza</h1>
+  <div id="buttons"></div>
+    <!-- <button data-person="arnold schwarzenegger">
+      I'll be back
+    </button> -->
+    <form id="gif-form">
+        <label for="gif-input">Add a gif, Yo!</label>
+        <input type="text" id="gif-input"><br>
+  
+        <!-- Button triggers new movie to be added -->
+        <input id="add-gif" type="submit" value="Add a gif, Yo!">
+    </form>
+
+
+  
+
+  <div id="gifs-appear-here">
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    // tag selector - no . or # applies to every button on the page
+    var gifs = ["Moira Rose", "Ina Garten", "Julia Child", "Bob Rose"];
+    
+    
+    function displayGif() {
+    
+    // var movie = $(this).attr("data-name");
+    var person = $(this).attr("data-person");
+    // var queryURL = "https://www.omdbapi.com/?t=" + movie + "&apikey=trilogy";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        person + "&api_key=d0gZ1wSOWntBEY5ypnGZcs5M0Qo7DfJ0&limit=10";
+
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+      // $("#movies-view").text(JSON.stringify(response));
+      
+    });
+  }
+
+    
+    $("button").on("click", function() {
+      // this - clicked button
+      
+      
+      
+
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+        .then(function(response) {
+          console.log(response);
+          var results = response.data;
+          console.log(results);
+          for (var i = 0; i < results.length; i++) {
+            var gifDiv = $("<div>");
+
+            var rating = results[i].rating;
+                // array of objects
+            var p = $("<p>").text("Rating: " + rating);
+
+            var personImage = $("<img>");
+            personImage.attr("src", results[i].images.fixed_height.url);
+
+            gifDiv.prepend(p);
+            gifDiv.prepend(personImage);
+
+            $("#gifs-appear-here").prepend(gifDiv);
+          }
+        });
+    });
+  </script>
+</body>
+
+</html>

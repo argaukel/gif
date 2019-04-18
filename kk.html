@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <h1>Gif-a-palooza</h1>
+        <div id="buttons"></div>
+          <!-- <button data-person="arnold schwarzenegger">
+            I'll be back
+          </button> -->
+          <form id="gif-form">
+              <label for="gif-input">Add a gif, Yo!</label>
+              <input type="text" id="gif-input"><br>
+        
+              <!-- Button triggers new movie to be added -->
+              <input id="add-gif" type="submit" value="Add a gif, Yo!">
+          </form>
+      
+      
+        
+      
+          <div id="buttons-view"></div>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+        // starting gif array
+        var gifs = ["Moira Rose", "Ina Garten", "Julia Child", "Bob Rose"];
+       
+        function alertGifContent() {
+        var gifContent = $(this).attr("data-person");
+
+        alert(gifContent);
+      }
+
+        function renderButtons() {
+            // clears list before generating again
+            $("#buttons-view").empty();
+            for (var i = 0; i < gifs.length; i++) {
+                // create a variable that will build and hold a button div
+                var a = $("<button>");
+                a.addClass("gif");
+                a.attr("data-person", gifs[i]);
+                a.text(gifs[i]);
+                $("#buttons-view").append(a);    
+            }
+        }
+        
+        
+        $("#add-gif").on("click", function(event) {
+            event.preventDefault();
+            var gif = $("#gif-input").val().trim();
+            console.log(gif);
+            gifs.push(gif);
+            renderButtons();
+        });
+        
+        
+        $(document).on("click", ".gif", alertGifContent);
+        
+        renderButtons();
+
+        
+        
+        
+        </script> 
+</body>
+</html>
