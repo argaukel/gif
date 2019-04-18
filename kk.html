@@ -8,7 +8,7 @@
 </head>
 <body>
         <h1>Gif-a-palooza</h1>
-        <div id="buttons"></div>
+        <!-- <div id="buttons"></div> -->
           <!-- <button data-person="arnold schwarzenegger">
             I'll be back
           </button> -->
@@ -24,17 +24,15 @@
         
       
           <div id="buttons-view"></div>
+
+          <div id="gifs-appear-here"></div>
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script>
         // starting gif array
-        var gifs = ["Moira Rose", "Ina Garten", "Julia Child", "Bob Rose"];
+        var gifs = ["Moira Rose", "Ina Garten", "Julia Child", "Bob Ross"];
        
-        function alertGifContent() {
-        var gifContent = $(this).attr("data-person");
-
-        alert(gifContent);
-      }
+        
 
         function renderButtons() {
             // clears list before generating again
@@ -58,8 +56,46 @@
             renderButtons();
         });
         
+        function generateGifContent() {
         
-        $(document).on("click", ".gif", alertGifContent);
+        var gifContent = $(this).attr("data-person");
+        console.log(gifContent);
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        gifContent + "&api_key=d0gZ1wSOWntBEY5ypnGZcs5M0Qo7DfJ0&limit=10";
+        
+        $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+
+      .then(function(response) {
+          console.log(response);
+          var results = response.data;
+          for (var i = 0; i < results.length; i++) {
+
+        // Creating and storing a div tag
+        var gifDiv = $("<div>");
+
+        // Creating a paragraph tag with the result item's rating
+        var p = $("<p>").text("Rating: " + results[i].rating);
+
+        // Creating and storing an image tag
+        var gifImage = $("<img>");
+        // Setting the src attribute of the image to a property pulled off the result item
+        gifImage.attr("src", results[i].images.fixed_height.url);
+
+        // Appending the paragraph and image tag to the gifDiv
+        gifDiv.append(p);
+        gifDiv.append(gifImage);
+
+        // Prependng the gifDiv to the HTML page in the "#gifs-appear-here" div
+        $("#gifs-appear-here").prepend(gifDiv);
+    }
+      })
+    
+        };
+        
+        $(document).on("click", ".gif", generateGifContent);
         
         renderButtons();
 
